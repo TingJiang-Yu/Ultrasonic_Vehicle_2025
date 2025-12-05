@@ -4,7 +4,7 @@
 
 #include <Arduino.h>
 #include <driver/ledc.h>  // ESP32 LEDC PWM库
-#include "Config.h"
+#include "config.h"
 
 class MotorController {
 private:
