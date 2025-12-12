@@ -20,10 +20,6 @@
 // ESP32使用LEDC控制器
 #define PWM_FREQUENCY 8000      // PWM频率（Hz）
 #define PWM_RESOLUTION 8        // PWM分辨率（8位 = 0-255）
-#define PWM_CHANNEL_LEFT_A 0    // 左轮电机A PWM通道
-#define PWM_CHANNEL_LEFT_B 1    // 左轮电机B PWM通道
-#define PWM_CHANNEL_RIGHT_A 2   // 右轮电机A PWM通道
-#define PWM_CHANNEL_RIGHT_B 3   // 右轮电机B PWM通道
 
 // ================= 系统参数 =================
 #define MAX_SPEED 255          // 最大PWM值
