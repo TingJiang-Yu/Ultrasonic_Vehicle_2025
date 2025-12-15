@@ -2,7 +2,6 @@
 
 pid_controller::pid_controller(float* data_d, float* data_o)
 {
-
     this->obs = new pid_data();
     this->data_d = data_d;
     this->data_o = data_o;

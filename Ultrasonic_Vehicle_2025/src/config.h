@@ -14,11 +14,6 @@
 #define ULTRASONIC_RX1_PIN 27   // GPIO27 - 超声波接收1（外部中断）
 #define ULTRASONIC_RX2_PIN 14   // GPIO14 - 超声波接收2（外部中断）
 
-// ================= PWM配置 =================
-// ESP32使用LEDC控制器
-#define PWM_FREQUENCY 8000      // PWM频率（Hz）
-#define PWM_RESOLUTION 8        // PWM分辨率（8位 = 0-255）
-
 // ================= 系统参数 =================
 #define MAX_SPEED 255          // 最大PWM值
 #define MIN_SPEED 0            // 最小PWM值
@@ -28,6 +23,28 @@
 #define ULTRASONIC_FREQUENCY 40000    // 40kHz
 #define ULTRASONIC_BURST_COUNT 8      // 每次发射8个周期
 #define ULTRASONIC_TIMEOUT_US 30000   // 30ms超时（约5米）
+
+// ================= 超声波ADC配置 =================
+#define ADC_LEFT_PIN 32        // GPIO32 - 左侧超声波ADC输入
+#define ADC_RIGHT_PIN 33       // GPIO33 - 右侧超声波ADC输入
+#define ADC_RESOLUTION 12      // ADC分辨率 (12位 = 0-4095)
+#define ADC_ATTENUATION ADC_11db  // ADC衰减（提高测量范围）
+
+// ================= 信号处理参数 =================
+#define SIGNAL_NOISE_FLOOR 100  // 噪声阈值
+#define SIGNAL_SATURATION 4000  // 信号饱和阈值
+#define SIGNAL_MIN_VALID 150    // 最小有效信号
+
+// ================= 距离校准参数 =================
+#define DISTANCE_CALIBRATION_NEAR 30.0   // 30cm处的校准值
+#define DISTANCE_CALIBRATION_FAR 100.0   // 100cm处的校准值
+#define DISTANCE_MAX_RANGE 500.0         // 最大测量距离 (cm)
+#define DISTANCE_MIN_RANGE 10.0          // 最小测量距离 (cm)
+
+// ================= 跟随控制参数 =================
+#define FOLLOW_TARGET_DISTANCE 50.0      // 目标跟随距离 (cm)
+#define FOLLOW_MAX_DISTANCE 200.0        // 最大跟随距离 (cm)
+#define FOLLOW_DIRECTION_DEADZONE 0.15   // 方向死区
 
 // ================= 硬件定时器配置 =================
 #define TIMER_NUMBER 0         // 使用硬件定时器0

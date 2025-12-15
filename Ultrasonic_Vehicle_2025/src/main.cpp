@@ -1,14 +1,15 @@
-#include "motor_controller.h"
-#include "pid_controller.h"
+#include <Arduino.h>
+#include "main_controller.h"
 
-MotorController motor;
+main_controller ctrl;
 
 void setup() 
 {
     Serial.begin(115200);
+    ctrl.init();
 }
 
 void loop() 
 {
-    
+    ctrl.update();
 }

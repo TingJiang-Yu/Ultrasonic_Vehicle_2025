@@ -6,7 +6,7 @@
 #include <driver/ledc.h>  // ESP32 LEDC PWM库
 #include "config.h"
 
-class MotorController {
+class motor_controller {
 private:
     // 电机引脚
     int leftAPin, leftBPin;
@@ -28,7 +28,7 @@ private:
     
 public:
     // 构造函数
-    MotorController();
+    motor_controller();
     
     // 初始化电机
     void init();

@@ -1,6 +1,6 @@
 #include "motor_controller.h"
 
-MotorController::MotorController() 
+motor_controller::motor_controller() 
     : leftAPin(MOTOR_LEFT_A_PIN), 
       leftBPin(MOTOR_LEFT_B_PIN),
       rightAPin(MOTOR_RIGHT_A_PIN), 
@@ -8,13 +8,11 @@ MotorController::MotorController()
       currentLeftSpeed(0), 
       currentRightSpeed(0),
       leftDirection(true),
-      rightDirection(true),
-      pwmFrequency(PWM_FREQUENCY),
-      pwmResolution(PWM_RESOLUTION) 
+      rightDirection(true)
       {}
 
 // ================= 初始化函数 =================
-void MotorController::init() 
+void motor_controller::init() 
 {   
     // 设置引脚模式
     pinMode(leftAPin, OUTPUT);
@@ -32,14 +30,14 @@ void MotorController::init()
     stop();
 }
 
-int MotorController::constrainSpeed(int speed) 
+int motor_controller::constrainSpeed(int speed) 
 {
     if (speed > MAX_SPEED) return MAX_SPEED;
     if (speed < MIN_SPEED) return MIN_SPEED;
     return speed;
 }
 
-void MotorController::stop() {
+void motor_controller::stop() {
     brakeAllMotors();
     currentLeftSpeed = 0;
     currentRightSpeed = 0;
@@ -47,7 +45,7 @@ void MotorController::stop() {
 
 // ================= 独立控制 =================
 
-void MotorController::setLeftSpeed(int speed) {
+void motor_controller::setLeftSpeed(int speed) {
     speed = constrain(speed, -MAX_SPEED, MAX_SPEED);
     
     if (speed > 0) {
@@ -70,7 +68,7 @@ void MotorController::setLeftSpeed(int speed) {
     }
 }
 
-void MotorController::setRightSpeed(int speed) {
+void motor_controller::setRightSpeed(int speed) {
     speed = constrain(speed, -MAX_SPEED, MAX_SPEED);
     
     if (speed > 0) {
@@ -93,7 +91,7 @@ void MotorController::setRightSpeed(int speed) {
     }
 }
 
-void MotorController::brakeAllMotors() {
+void motor_controller::brakeAllMotors() {
     analogWrite(leftAPin, MAX_SPEED);
     analogWrite(leftBPin, MAX_SPEED);
     analogWrite(rightAPin, MAX_SPEED);
