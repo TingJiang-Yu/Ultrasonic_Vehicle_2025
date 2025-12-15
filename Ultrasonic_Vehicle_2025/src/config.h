@@ -11,8 +11,6 @@
 
 // ================= 超声波引脚 =================
 // ESP32所有引脚都支持外部中断
-#define ULTRASONIC_TX1_PIN 25   // GPIO25 - 超声波发射1
-#define ULTRASONIC_TX2_PIN 26   // GPIO26 - 超声波发射2
 #define ULTRASONIC_RX1_PIN 27   // GPIO27 - 超声波接收1（外部中断）
 #define ULTRASONIC_RX2_PIN 14   // GPIO14 - 超声波接收2（外部中断）
 
