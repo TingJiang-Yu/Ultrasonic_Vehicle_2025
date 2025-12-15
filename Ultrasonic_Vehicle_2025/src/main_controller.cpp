@@ -37,7 +37,7 @@ void main_controller::initPID()
 void main_controller::update() 
 {
     // 更新超声波传感器数据
-    sonic.updateADC();
+    sonic.update();
     
     // 根据状态执行相应控制
     switch (currentState) 
@@ -71,40 +71,30 @@ void main_controller::handleSearchState()
 // ================= 跟随状态（使用PID控制） =================
 void main_controller::handleFollowState() 
 {
+    // 检查信号是否丢失
     if (!sonic.hasValidSignal()) 
     {
+        Serial.println("[Main] Signal lost! Switching to SEARCH mode");
         setState(STATE_SEARCH);
         return;
     }
     
-    // 获取当前方向偏差
-    // directionBias: -1.0（完全偏左）到 1.0（完全偏右），0表示在中间
+    // 获取当前方向偏差（现在是基于时间差计算）
     currentDirection = sonic.getDirectionBias();
     
     // 使用PID计算控制输出
-    // PID目标：让 currentDirection 接近 0（信号在中间）
     directionPid->Calc(currentDirection);
     
-    // pidOutput 现在包含PID控制器的输出值
-    // 正值：需要右转（减小正偏差或增大负偏差）
-    // 负值：需要左转（减小负偏差或增大正偏差）
+    // 基础速度
+    int baseSpeed = BASE_SPEED;
     
     // 根据PID输出调整左右轮速度
-    // 如果 pidOutput > 0，需要右转：左轮加速，右轮减速
-    // 如果 pidOutput < 0，需要左转：右轮加速，左轮减速
-    int leftSpeed = BASE_SPEED - pidOutput;
-    int rightSpeed = BASE_SPEED + pidOutput;
+    int leftSpeed = baseSpeed - pidOutput;
+    int rightSpeed = baseSpeed + pidOutput;
     
     // 限制速度范围
     leftSpeed = constrain(leftSpeed, -MAX_SPEED, MAX_SPEED);
     rightSpeed = constrain(rightSpeed, -MAX_SPEED, MAX_SPEED);
-    
-    // 如果方向偏差很小，可以稍微降低速度
-    if (fabs(currentDirection) < 0.05) 
-    {
-        leftSpeed = BASE_SPEED;
-        rightSpeed = BASE_SPEED;
-    }
     
     // 执行移动
     moveCar(leftSpeed, rightSpeed);

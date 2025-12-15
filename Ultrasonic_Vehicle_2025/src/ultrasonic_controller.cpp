@@ -93,12 +93,10 @@ void ultrasonic_controller::update()
     // 检查超时（超过50ms没有新测量）
     if (measurementReady) 
     {
-        // 测量已准备好，可以读取
         lastMeasurementTime = currentTime;
     } 
     else if (currentTime - lastMeasurementTime > 50) 
     {
-        // 超时，重置测量
         resetMeasurement();
     }
 }
