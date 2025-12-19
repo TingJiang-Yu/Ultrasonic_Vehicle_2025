@@ -33,4 +33,5 @@ bool main_controller::update()
         pid->Calc(dir_t);
         motor->setSpeed(dir_output);
     }
+    return true;
 }
