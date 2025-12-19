@@ -1,0 +1,124 @@
+% !TeX program = xelatex
+\documentclass[UTF8,a4paper,12pt]{article}
+
+% ===== 基本宏包 =====
+\usepackage{ctex}            % 中文支持
+\usepackage{geometry}        % 页面设置
+\usepackage{amsmath,amssymb} % 数学公式
+\usepackage{graphicx}        % 插图
+\usepackage{booktabs}        % 三线表
+\usepackage{float}           % 固定浮动体位置
+\usepackage{caption}         % 图表标题
+\usepackage{hyperref}        % 超链接
+
+% ===== 页面设置 =====
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+
+% ===== 文档信息 =====
+\title{\textbf{实验报告标题}}
+\author{
+    小组名称：XXX \\
+    组员：张三（学号）、李四（学号）、王五（学号） \\
+    指导教师：XXX
+}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+本实验旨在……（简要说明实验目的、方法和主要结论，150--300字左右）
+\end{abstract}
+
+\textbf{关键词：} 实验关键词1；实验关键词2；实验关键词3
+
+\newpage
+
+\tableofcontents
+\newpage
+
+% ======================
+\section{实验目的}
+简要说明本实验要解决的问题和学习目标。
+
+% ======================
+\section{实验原理}
+介绍实验所依据的理论基础、公式推导或相关背景。
+
+例如：
+\begin{equation}
+E = mc^2
+\end{equation}
+
+% ======================
+\section{实验仪器与环境}
+\subsection{实验仪器}
+\begin{itemize}
+    \item 仪器A
+    \item 仪器B
+\end{itemize}
+
+\subsection{实验环境}
+如操作系统、软件版本、编程语言等。
+
+% ======================
+\section{实验方法与步骤}
+\subsection{实验方法}
+说明整体实验思路。
+
+\subsection{实验步骤}
+\begin{enumerate}
+    \item 第一步……
+    \item 第二步……
+    \item 第三步……
+\end{enumerate}
+
+% ======================
+\section{实验结果}
+\subsection{数据与现象}
+
+\begin{table}[H]
+\centering
+\caption{实验数据示例}
+\begin{tabular}{ccc}
+\toprule
+参数1 & 参数2 & 参数3 \\
+\midrule
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% \subsection{结果展示}
+% \begin{figure}[H]
+% \centering
+% \includegraphics[width=0.6\textwidth]{example.png}
+% \caption{实验结果示意图}
+% \end{figure}
+
+% ======================
+\section{结果分析与讨论}
+对实验结果进行分析，讨论误差来源及改进方法。
+
+% ======================
+\section{小组分工说明}
+\begin{itemize}
+    \item 张三：实验设计、数据分析
+    \item 李四：实验操作、结果整理
+    \item 王五：报告撰写、排版
+\end{itemize}
+
+% ======================
+\section{结论}
+总结实验成果，给出最终结论。
+
+% ======================
+\section*{参考文献}
+\addcontentsline{toc}{section}{参考文献}
+\begin{thebibliography}{9}
+\bibitem{ref1} 作者. \textit{书名或论文名}. 出版社, 年份.
+\end{thebibliography}
+
+\end{document}
