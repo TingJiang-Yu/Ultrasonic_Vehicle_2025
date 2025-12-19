@@ -19,19 +19,17 @@ private:
     float* data_d; // 预期数据
     
 public:
-    /// @brief 初始化函数，生成PID控制器对象
+    /// @brief 构造函数
+    pid_controller();
+
+    /// @brief 初始化PID控制器
     /// @param data_d 期望的数据（比如小车的位置）
     /// @param data_o 实际输出的数据指令（比如小车电机的扭矩）
-    pid_controller(float* data_d, float* data_o);
-    pid_controller();
+    bool init(float* data_d, float* data_o);
 
     /// @brief PID计算函数，通过当前获取的数据计算应该输出的数据，并存储在指针中
     /// @param data_t 当前传感器获取的数据，对应data_d，PID需要让data_t不断接近data_d
     bool Calc(float data_t);
-
-    /// @brief 设置data_d
-    /// @param data_d 期望的数据（比如小车的位置）
-    bool SetD(float data_d);
 
     /// @brief 设置PID控制的系数
     /// @param kp 比例系数

@@ -1,15 +1,29 @@
 #include "pid_controller.h"
 
-pid_controller::pid_controller(float* data_d, float* data_o)
-{
-    this->obs = new pid_data();
-    this->data_d = data_d;
-    this->data_o = data_o;
-}
-
 pid_controller::pid_controller()
 {
     this->obs = new pid_data();
+}
+
+bool pid_controller::init(float* data_d, float* data_o)
+{
+    this->data_d = data_d;
+    this->data_o = data_o;
+
+    // 初始化误差和系数
+    obs->e[0] = 0.0f;
+    obs->e[1] = 0.0f;
+    obs->e[2] = 0.0f;
+
+    obs->k[0] = 0.0f; // kp
+    obs->k[1] = 0.0f; // ki
+    obs->k[2] = 0.0f; // kd
+
+    obs->l[0] = 0.0f; // 积分限幅
+    obs->l[1] = 0.0f; // 输出最小
+    obs->l[2] = 0.0f; // 输出最大
+
+    return true;
 }
 
 bool pid_controller::Calc(float data_t)
@@ -37,13 +51,6 @@ bool pid_controller::Calc(float data_t)
         *data_o = obs->l[1];
     else
         *data_o = data_;
-
-    return true;
-}
-
-bool pid_controller::SetD(float data_d)
-{
-    *this->data_d = data_d;
 
     return true;
 }

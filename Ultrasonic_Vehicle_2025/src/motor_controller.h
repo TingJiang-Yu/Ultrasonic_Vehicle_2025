@@ -3,7 +3,6 @@
 #define MOTOR_CONTROLLER_H
 
 #include <Arduino.h>
-#include <driver/ledc.h>  // ESP32 LEDC PWM库
 #include "config.h"
 
 class motor_controller {
@@ -12,39 +11,26 @@ private:
     int leftAPin, leftBPin;
     int rightAPin, rightBPin;
     
-    // PWM通道
-    int leftAChannel, leftBChannel;
-    int rightAChannel, rightBChannel;
-    
     // 当前状态
     int currentLeftSpeed;
     int currentRightSpeed;
     bool leftDirection;  // true=前进, false=后退
     bool rightDirection;
-    
-    // PWM配置
-    int pwmFrequency;
-    int pwmResolution;
-    
-public:
-    // 构造函数
-    motor_controller();
-    
-    // 初始化电机
-    void init();
 
+public:
+    motor_controller();
+    void init();
+    void setSpeed(int leftSpeed, int rightSpeed);
+    void setSpeed(int speed);
     void stop();
     
+private:
     // 速度控制
     void setLeftSpeed(int speed);  // -255 to 255
     void setRightSpeed(int speed); // -255 to 255
-    
-private:
+
     // 限制速度范围
     int constrainSpeed(int speed);
-    
-    // 设置单个PWM输出
-    void setPWMOutput(int channel, int duty);
     
     void brakeAllMotors();
 };

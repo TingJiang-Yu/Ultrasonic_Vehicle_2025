@@ -11,8 +11,8 @@
 
 // ================= 超声波引脚 =================
 // ESP32所有引脚都支持外部中断
-#define ULTRASONIC_RX_LEFT_PIN  27   // GPIO27 - 左超声波接收（外部中断）
-#define ULTRASONIC_RX_RIGHT_PIN 14   // GPIO14 - 右超声波接收（外部中断）
+#define ULTRASONIC_RX_LEFT_PIN  25   // GPIO25 - 左超声波接收（外部中断）
+#define ULTRASONIC_RX_RIGHT_PIN 26   // GPIO26 - 右超声波接收（外部中断）
 
 // ================= 时间测量参数 =================
 #define TIME_RESOLUTION_US 1         // 时间分辨率1μs
@@ -26,7 +26,7 @@
 // ================= 系统参数 =================
 #define MAX_SPEED 255          // 最大PWM值
 #define MIN_SPEED 0            // 最小PWM值
-#define BASE_SPEED 150         // 基础速度
+#define BASE_SPEED 127         // 基础速度
 
 // ================= 超声波参数 =================
 #define ULTRASONIC_FREQUENCY 40000    // 40kHz
@@ -64,6 +64,10 @@
 #define PID_KP 1.0
 #define PID_KI 0.1
 #define PID_KD 0.05
+#define PID_MAX_OUTPUT 255.0
+#define PID_MIN_OUTPUT -255.0
+#define PID_MAX_INTEGRAL 1000.0
+#define PID_DESIRED_DATA 0.0
 
 // ================= 调试标志 =================
 #define DEBUG_ENABLED true

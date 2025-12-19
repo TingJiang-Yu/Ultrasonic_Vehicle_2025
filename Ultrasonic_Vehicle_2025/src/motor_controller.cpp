@@ -11,30 +11,43 @@ motor_controller::motor_controller()
       rightDirection(true)
       {}
 
-// ================= 初始化函数 =================
 void motor_controller::init() 
 {   
-    // 设置引脚模式
     pinMode(leftAPin, OUTPUT);
     pinMode(leftBPin, OUTPUT);
     pinMode(rightAPin, OUTPUT);
     pinMode(rightBPin, OUTPUT);
     
-    // 初始化PWM为0
     analogWrite(leftAPin, 0);
     analogWrite(leftBPin, 0);
     analogWrite(rightAPin, 0);
     analogWrite(rightBPin, 0);
 
-    // 初始停止
     stop();
 }
 
-int motor_controller::constrainSpeed(int speed) 
+void motor_controller::setSpeed(int leftSpeed, int rightSpeed) 
 {
-    if (speed > MAX_SPEED) return MAX_SPEED;
-    if (speed < MIN_SPEED) return MIN_SPEED;
-    return speed;
+    setLeftSpeed(leftSpeed);
+    currentLeftSpeed += BASE_SPEED;
+    setRightSpeed(rightSpeed);
+    currentRightSpeed += BASE_SPEED;
+}
+
+void motor_controller::setSpeed(int speed) 
+{
+    if (speed > 0) {
+        setLeftSpeed(speed);
+        setRightSpeed(-speed);
+    } else if (speed < 0) {
+        setLeftSpeed(-speed);
+        setRightSpeed(speed);
+    } else {
+        stop();
+        return;
+    }
+    currentLeftSpeed += BASE_SPEED;
+    currentRightSpeed += BASE_SPEED;
 }
 
 void motor_controller::stop() {
@@ -43,27 +56,16 @@ void motor_controller::stop() {
     currentRightSpeed = 0;
 }
 
-// ================= 独立控制 =================
-
 void motor_controller::setLeftSpeed(int speed) {
     speed = constrain(speed, -MAX_SPEED, MAX_SPEED);
     
     if (speed > 0) {
-        // 前进
-        analogWrite(leftAPin, speed);
-        analogWrite(leftBPin, 0);
         leftDirection = true;
         currentLeftSpeed = speed;
     } else if (speed < 0) {
-        // 后退
-        analogWrite(leftAPin, 0);
-        analogWrite(leftBPin, -speed);
         leftDirection = false;
         currentLeftSpeed = speed;
     } else {
-        // 停止
-        analogWrite(leftAPin, 0);
-        analogWrite(leftBPin, 0);
         currentLeftSpeed = 0;
     }
 }
@@ -72,23 +74,21 @@ void motor_controller::setRightSpeed(int speed) {
     speed = constrain(speed, -MAX_SPEED, MAX_SPEED);
     
     if (speed > 0) {
-        // 前进
-        analogWrite(rightAPin, speed);
-        analogWrite(rightBPin, 0);
         rightDirection = true;
         currentRightSpeed = speed;
     } else if (speed < 0) {
-        // 后退
-        analogWrite(rightAPin, 0);
-        analogWrite(rightBPin, -speed);
         rightDirection = false;
         currentRightSpeed = speed;
     } else {
-        // 停止
-        analogWrite(rightAPin, 0);
-        analogWrite(rightBPin, 0);
         currentRightSpeed = 0;
     }
+}
+
+int motor_controller::constrainSpeed(int speed) 
+{
+    if (speed > MAX_SPEED) return MAX_SPEED;
+    if (speed < MIN_SPEED) return MIN_SPEED;
+    return speed;
 }
 
 void motor_controller::brakeAllMotors() {
