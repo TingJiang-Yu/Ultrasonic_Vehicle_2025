@@ -15,8 +15,8 @@
 \contentsline {subsection}{\numberline {4.6}搜索模式与状态切换机制}{6}{}%
 \contentsline {section}{\numberline {5}实验结果与分析}{6}{}%
 \contentsline {section}{\numberline {6}总结}{6}{}%
-\contentsline {section}{\numberline {A}程序源代码}{6}{}%
-\contentsline {subsection}{\numberline {A.1}main.cpp}{6}{}%
+\contentsline {section}{\numberline {A}程序源代码}{7}{}%
+\contentsline {subsection}{\numberline {A.1}main.cpp}{7}{}%
 \contentsline {subsection}{\numberline {A.2}main\_controller.h}{7}{}%
 \contentsline {subsection}{\numberline {A.3}motor\_controller.h}{8}{}%
 \contentsline {subsection}{\numberline {A.4}ultrasonic\_controller.h}{9}{}%
