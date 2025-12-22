@@ -1,124 +1,208 @@
-% !TeX program = xelatex
-\documentclass[UTF8,a4paper,12pt]{article}
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
 
-% ===== 基本宏包 =====
-\usepackage{ctex}            % 中文支持
-\usepackage{geometry}        % 页面设置
-\usepackage{amsmath,amssymb} % 数学公式
-\usepackage{graphicx}        % 插图
-\usepackage{booktabs}        % 三线表
-\usepackage{float}           % 固定浮动体位置
-\usepackage{caption}         % 图表标题
-\usepackage{hyperref}        % 超链接
+\lstset{
+    language=C++,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{orange},
+    numbers=left,
+    numberstyle=\tiny,
+    breaklines=true,
+    frame=single
+}
 
-% ===== 页面设置 =====
 \geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
 
-% ===== 文档信息 =====
-\title{\textbf{实验报告标题}}
-\author{
-    小组名称：XXX \\
-    组员：张三（学号）、李四（学号）、王五（学号） \\
-    指导教师：XXX
-}
+\title{基于超声波定位的自动跟随小车设计}
+\author{指导老师：张士文老师 \quad 作者：张宇涵、于沛龙、落学富}
 \date{\today}
 
 \begin{document}
-
 \maketitle
-
-\begin{abstract}
-本实验旨在……（简要说明实验目的、方法和主要结论，150--300字左右）
-\end{abstract}
-
-\textbf{关键词：} 实验关键词1；实验关键词2；实验关键词3
-
-\newpage
 
 \tableofcontents
 \newpage
 
-% ======================
+%==========================
 \section{实验目的}
-简要说明本实验要解决的问题和学习目标。
 
-% ======================
-\section{实验原理}
-介绍实验所依据的理论基础、公式推导或相关背景。
+本实验基于数字电子技术、模拟电子技术与嵌入式系统基础知识，设计并实现基于超声波信号的自动跟随小车系统。
+通过自行搭建超声波发送与接收电路，并结合单片机进行信号处理与控制，
+实现小车对超声波声源的自动定位与跟随，若无超声波信号，则小车自动进入旋转搜索模式，等待捕获信号源。
 
-例如：
-\begin{equation}
-E = mc^2
-\end{equation}
+通过本实验，可以加深对超声波传感技术、信号调理电路设计以及嵌入式控制系统开发的理解与应用能力。
 
-% ======================
-\section{实验仪器与环境}
-\subsection{实验仪器}
+%==========================
+\section{系统总体方案设计}
+
+\subsection{系统结构}
+
+系统结构主要分为三部分：超声波发送端、超声波接收端、电机驱动部分。
+
+发送端通过6.5V电池组模块供电，由单片机信号驱动，产生频率 $40kHz$ 的超声波信号
+
+接收端含电机驱动模块、接收器滤波整形电路以及 MCU 。
+接收器安装于小车前方两侧接收声波信号，通过滤波整形电路将正弦信号转换为40kHz的脉冲信号，输入到 MCU 的 ADC 引脚进行信号处理。
+
+\subsection{工作原理}
+
+由于发送端与接收端分离，系统无法直接获取发送时刻，因此采用双接收器时间差定位方法。
+通过比较左右接收器接收到超声波信号的时间差，判断声源相对于小车的方向，结合PID控制算法控制电机驱动模块，从而控制小车进行转向与跟随。
+
+当系统检测不到有效超声信号时，小车进入搜索模式，原地旋转以重新寻找信号源。
+
+%==========================
+\section{硬件系统设计}
+
+\subsection{超声波发送电路}
+
+超声波发射端用于产生稳定的高频超声信号，为接收端提供连续的声源参考。
+本系统采用独立供电的手持式超声波发送模块，与小车接收端相互分离，符合实验任务书对系统结构的要求。
+
+实验中采用 MAX232 芯片构成的电平转换电路，将控制器输出的 PWM 信号转换为幅值更高的差分激励信号，
+从而有效驱动超声波发射器，提高超声波信号的发射强度和传播距离。
+
+在工作过程中，控制器持续输出若干周期的 $40kHz$ 脉冲信号，超声波发射器在电激励作用下产生连续的超声波信号并向空间辐射。
+接收端通过检测该连续超声波信号的到达时间差，实现对声源方向的判断与跟随控制。
+
+\subsection{超声波接收滤波与整形电路}
+
+\textbf{（本部分由张宇涵完成）} %写的时候把这一行删掉然后填上内容
+
+\subsection{单片机与电机驱动电路}
+
+本系统选用 \texttt{ESP32} 单片机作为核心控制器，负责超声波信号的采集、时间差计算、控制算法运算以及电机驱动信号的输出。
+
+在超声波信号采集方面，左右两个超声波接收电路输出经滤波与整形后的 $40kHz$ 数字脉冲信号，分别接入 ESP32 的外部中断引脚。
+单片机在检测到信号上升沿时记录当前时间，通过比较左右信号的到达时间差判断声源相对于小车的方向。
+
+小车的运动控制采用两轮差速驱动方式。电机驱动电路中，每个电机由单路 PWM 信号控制，其方向端在硬件上固定为正转状态。
+单片机通过改变 PWM 信号的占空比调节电机转速，从而实现小车的速度控制与转向控制。
+
+在具体控制策略上，系统将小车的运动分解为基础前进速度与转向修正量两部分。
+基础前进速度用于保证小车持续向前运动，转向修正量由控制算法计算得到，并以速度差分量的形式叠加至左右电机的驱动信号中。
+通过增大一侧电机转速、减小另一侧电机转速的方式实现转向控制。
+
+当系统未检测到有效的超声波信号时，单片机控制左右电机以不同转速运行，
+使小车围绕单侧车轮缓慢旋转，从而进入搜索状态以重新捕获超声波信号。
+
+%==========================
+\section{软件系统设计}
+
+为提高系统的可读性、可维护性与调试效率，本系统的软件部分采用模块化与面向对象相结合的设计方法。
+
+软件系统主要由以下功能模块构成，各模块之间通过清晰的接口进行通信与协作：
 \begin{itemize}
-    \item 仪器A
-    \item 仪器B
+    \item 主控制模块：\texttt{main\_controller}，负责系统状态管理与各功能模块的协调调度；
+    \item 超声波检测模块：\texttt{ultrasonic\_controller}，用于采集左右超声波信号并计算时间差；
+    \item PID 控制模块：\texttt{pid\_controller}，根据时间差计算转向控制量；
+    \item 电机控制模块：\texttt{motor\_controller}，根据控制指令输出电机驱动信号。
 \end{itemize}
 
-\subsection{实验环境}
-如操作系统、软件版本、编程语言等。
 
-% ======================
-\section{实验方法与步骤}
-\subsection{实验方法}
-说明整体实验思路。
+\subsection{软件系统总体结构}
 
-\subsection{实验步骤}
-\begin{enumerate}
-    \item 第一步……
-    \item 第二步……
-    \item 第三步……
-\end{enumerate}
+系统程序以 \texttt{Arduino} 框架为基础，主函数仅负责系统初始化与循环调度。
+各功能模块在初始化阶段完成硬件配置，在主循环中由主控制模块统一调度执行。
 
-% ======================
-\section{实验结果}
-\subsection{数据与现象}
+\subsection{主控制模块设计}
 
-\begin{table}[H]
-\centering
-\caption{实验数据示例}
-\begin{tabular}{ccc}
-\toprule
-参数1 & 参数2 & 参数3 \\
-\midrule
-1 & 2 & 3 \\
-4 & 5 & 6 \\
-\bottomrule
-\end{tabular}
-\end{table}
+主控制模块为系统的软件核心，负责协调各功能模块的运行，其主要功能包括：
+超声波信号状态判断、时间差数据获取、控制算法调用以及系统状态切换。
+系统采用简单的状态机结构，定义“跟随状态 \texttt{FOLLOWING} 与搜索状态 \texttt{SEARCHING} 两种工作模式。
 
-% \subsection{结果展示}
-% \begin{figure}[H]
-% \centering
-% \includegraphics[width=0.6\textwidth]{example.png}
-% \caption{实验结果示意图}
-% \end{figure}
+在主循环中，控制器首先判断超声波检测模块是否获得了一次完整的左右信号检测。
+当检测到有效信号时，系统进入跟随状态；
+若在一定时间内未检测到有效信号，则系统自动切换至搜索状态。
 
-% ======================
-\section{结果分析与讨论}
-对实验结果进行分析，讨论误差来源及改进方法。
+\subsection{超声波时间差检测模块}
 
-% ======================
-\section{小组分工说明}
-\begin{itemize}
-    \item 张三：实验设计、数据分析
-    \item 李四：实验操作、结果整理
-    \item 王五：报告撰写、排版
-\end{itemize}
+超声波检测模块基于外部中断方式实现。
+左右两个超声波接收通道分别接入单片机的外部中断引脚，当检测到经整形后的超声波脉冲信号上升沿时，
+通过微秒级定时函数记录当前时间。为避免多次触发干扰，每个接收通道在完成一次检测后暂时锁定，直至左右信号均被接收。
 
-% ======================
-\section{结论}
-总结实验成果，给出最终结论。
+当左右接收器均完成一次有效触发后，系统计算左右信号的到达时间差，并将其作为后续方向控制的输入量。
+为增强系统的稳定性，对时间差数据设置限幅，避免异常信号对控制过程产生过大影响。
 
-% ======================
-\section*{参考文献}
-\addcontentsline{toc}{section}{参考文献}
-\begin{thebibliography}{9}
-\bibitem{ref1} 作者. \textit{书名或论文名}. 出版社, 年份.
-\end{thebibliography}
+\subsection{PID 方向控制算法}
+
+系统采用经典 PID 控制算法对小车的转向进行控制。
+控制目标为使左右超声波接收信号的到达时间差趋近于零，即小车正对超声波声源方向。
+PID 控制器以时间差作为反馈量，输出为转向控制量。
+
+在实现中， PID 控制器采用位置式算法结构，并引入积分限幅与输出限幅机制，以防止积分饱和和控制输出过大。
+PID 参数通过实验整定获得，在实验运行速度范围内能够保证系统稳定运行。
+
+\subsection{电机控制与运动策略}
+
+电机控制模块采用两轮差速控制策略。
+系统将小车的运动分解为基础前进速度与转向修正量两部分，其中基础速度用于保证小车持续向前运动，
+转向修正量由 PID 控制器计算得到，并以速度差分的形式叠加至左右电机。
+
+在驱动方式上，电机仅支持单方向转动，转速由单路 PWM 信号控制。
+通过提高一侧电机转速并降低另一侧电机转速，实现小车的转向控制。
+
+为提高系统稳定性，电机 PWM 信号的更新频率受到时间间隔限制，避免因控制量快速变化导致电机频繁调整，从而提升整体运行平滑性。
+
+\subsection{搜索模式与状态切换机制}
+
+当系统在设定时间内未检测到有效超声波信号时，主控制模块判定信号丢失，系统自动进入搜索状态。
+在搜索状态下，小车通过单侧驱动方式缓慢转向，以扩大超声波信号的搜索范围。
+当重新检测到有效信号后，系统立即切换回跟随状态，恢复正常跟随控制。
+
+%==========================
+\section{实验结果与分析}
+
+实验结果表明，小车能够在一定距离范围内稳定跟随超声波发送端运动。
+当声源移出接收范围时，小车可自动进入搜索模式并重新捕获信号。
+
+%==========================
+\section{总结}
+
+本文设计并实现了一种基于超声波时间差定位的自动跟随小车系统。
+实验结果表明，该系统结构清晰、控制逻辑合理，能够较好地完成自动跟随与搜索任务，达到了实验预期目标。
+
+%==========================
+\section*{致谢}
+
+在此向张老师和实验室的所有助教老师谨致以诚挚的感谢，也感谢实验室提供的良好实验条件和相关设备支持。
+
+特别感谢张老师在实验方案设计、整体思路把握以及电气系统调试方面给予的指导与建议，使本实验在系统结构和实现路径上更加清晰合理。
+也感谢助教老师在电路搭建、调试方法以及电机驱动模块的使用等方面提供的细致而及时的帮助，
+有效解决了实验过程中遇到的多项实际问题，为实验的顺利完成提供了重要保障。
+
+此外，感谢实验室提供的良好实验条件和相关设备支持。
+本次实验不仅加深了我们对超声波应用、电机控制及嵌入式系统设计的理解，也提升了综合分析与工程实践能力。
+在此一并表示衷心感谢。
+
+\appendix
+\section{程序源代码}
+
+\subsection{main.cpp}
+\lstinputlisting[language=C++,caption={主程序 main.cpp}]{../Ultrasonic_Vehicle_2025/src/main.cpp}
+
+\subsection{main\_controller.h}
+\lstinputlisting[language=C++,caption={主控制器头文件 main\_controller.h}]{../Ultrasonic_Vehicle_2025/src/main_controller.h}
+
+\subsection{motor\_controller.h}
+\lstinputlisting[language=C++,caption={电机控制模块头文件 motor\_controller.h}]{../Ultrasonic_Vehicle_2025/src/motor_controller.h}
+
+\subsection{ultrasonic\_controller.h}
+\lstinputlisting[language=C++,caption={超声波检测模块头文件 ultrasonic\_controller.h}]{../Ultrasonic_Vehicle_2025/src/ultrasonic_controller.h}
+
+\subsection{pid\_controller.h}
+\lstinputlisting[language=C++,caption={PID 控制器头文件 pid\_controller.h}]{../Ultrasonic_Vehicle_2025/src/pid_controller.h}
+
+\subsection{config.h}
+\lstinputlisting[language=C++,caption={系统参数配置文件 config.h}]{../Ultrasonic_Vehicle_2025/src/config.h}
 
 \end{document}

@@ -23,10 +23,6 @@
 /************************************************************
  * 4. 电机控制引脚 & PWM
  ************************************************************/
-// #define MOTOR_LEFT_A_PIN        4
-// #define MOTOR_LEFT_B_PIN        16
-// #define MOTOR_RIGHT_A_PIN       17
-// #define MOTOR_RIGHT_B_PIN       22
 #define MOTOR_LEFT_PIN        4
 #define MOTOR_RIGHT_PIN       17
 
