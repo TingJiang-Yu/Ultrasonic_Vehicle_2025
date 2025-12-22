@@ -34,6 +34,10 @@ public:
 
     // 手动复位（一般不需要外部调用）
     void reset();
+
+    // 供外部访问的时间戳（调试用）
+    unsigned long getLeftTime() const { return leftTime; }
+    unsigned long getRightTime() const { return rightTime; }
 };
 
 #endif

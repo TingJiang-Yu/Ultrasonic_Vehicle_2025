@@ -14,8 +14,12 @@ void setup()
 void loop() 
 {
     long timeDiff = usc.getTimeDiff();
+    Serial.print("Left Time: ");
+    Serial.print(usc.getLeftTime());
+    Serial.print(" Right Time: ");
+    Serial.print(usc.getRightTime());
     Serial.print("Time diff: ");
     Serial.println(timeDiff);
-    Serial.println("mus");
+    delay(500);
     // ctrl.update();
 }

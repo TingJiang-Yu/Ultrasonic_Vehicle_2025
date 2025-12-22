@@ -20,8 +20,8 @@ void ultrasonic_controller::init()
     pinMode(leftPin, INPUT);
     pinMode(rightPin, INPUT);
 
-    attachInterrupt(digitalPinToInterrupt(leftPin),  leftISR,  RISING);
-    attachInterrupt(digitalPinToInterrupt(rightPin), rightISR, RISING);
+    attachInterrupt(digitalPinToInterrupt(leftPin),  leftISR,  FALLING);
+    attachInterrupt(digitalPinToInterrupt(rightPin), rightISR, FALLING);
 }
 
 void IRAM_ATTR ultrasonic_controller::leftISR()
