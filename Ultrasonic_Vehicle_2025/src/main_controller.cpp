@@ -1,8 +1,5 @@
 #include "main_controller.h"
 
-#define SIGNAL_TIMEOUT_MS 300
-#define SEARCH_TURN_SPEED 80
-
 main_controller::main_controller()
 {
     pid = new pid_controller();

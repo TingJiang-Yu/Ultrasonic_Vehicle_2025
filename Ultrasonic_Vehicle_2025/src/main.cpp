@@ -5,6 +5,7 @@ main_controller ctrl;
 
 void setup() 
 {
+    Serial.begin(SERIAL_BAUDRATE);
     ctrl.init();
 }
 
