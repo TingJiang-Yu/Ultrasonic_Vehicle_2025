@@ -18,14 +18,16 @@ public:
     void stop();
 
 private:
-    int leftAPin, leftBPin;
-    int rightAPin, rightBPin;
+    uint8_t leftPin;
+    uint8_t rightPin;
 
     int baseSpeed;
     int turnSpeed;
 
+    unsigned long lastPwmUpdate;
+
     void applyOutput();
-    void driveMotor(int pinA, int pinB, int speed);
+    void driveMotor(int pin, int speed);
 };
 
 #endif

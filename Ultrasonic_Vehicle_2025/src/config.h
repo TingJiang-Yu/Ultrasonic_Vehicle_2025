@@ -23,13 +23,17 @@
 /************************************************************
  * 4. 电机控制引脚 & PWM
  ************************************************************/
-#define MOTOR_LEFT_A_PIN        16
-#define MOTOR_LEFT_B_PIN        17
-#define MOTOR_RIGHT_A_PIN       18
-#define MOTOR_RIGHT_B_PIN       19
+// #define MOTOR_LEFT_A_PIN        4
+// #define MOTOR_LEFT_B_PIN        16
+// #define MOTOR_RIGHT_A_PIN       17
+// #define MOTOR_RIGHT_B_PIN       22
+#define MOTOR_LEFT_PIN        4
+#define MOTOR_RIGHT_PIN       17
 
 #define MAX_SPEED               255     // PWM 最大值
-#define BASE_SPEED              120     // 直行基础速度
+#define BASE_SPEED              127     // 直行基础速度
+
+#define PWM_UPDATE_INTERVAL_MS  10      // 电机 PWM 更新间隔
 
 
 /************************************************************

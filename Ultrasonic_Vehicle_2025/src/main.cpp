@@ -2,14 +2,17 @@
 #include "main_controller.h"
 
 main_controller ctrl;
+motor_controller motor_test;
 
 void setup() 
 {
     Serial.begin(SERIAL_BAUDRATE);
-    ctrl.init();
+    motor_test.init();
+    // ctrl.init();
 }
 
 void loop() 
 {
-    ctrl.update();
+    motor_test.setTurn(30);
+    // ctrl.update();
 }
