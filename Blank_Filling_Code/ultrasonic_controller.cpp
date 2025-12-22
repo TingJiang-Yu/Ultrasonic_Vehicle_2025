@@ -54,9 +54,8 @@ long ultrasonic_controller::getTimeDiff()
     if (leftDetected && rightDetected)
     {
         noInterrupts();
-        diff = (long)leftTime - (long)rightTime;
-        leftDetected = false;
-        rightDetected = false;
+        diff = ;
+        
         interrupts();
     }
 
