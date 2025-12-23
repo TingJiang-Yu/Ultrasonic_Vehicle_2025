@@ -30,10 +30,14 @@ public:
     bool available();
 
     // 获取左右到达时间差（微秒）
-    long getTimeDiff();
+    int16_t getTimeDiff();
 
     // 手动复位（一般不需要外部调用）
     void reset();
+
+    // 供外部访问的时间戳（调试用）
+    unsigned long getLeftTime() const { return leftTime; }
+    unsigned long getRightTime() const { return rightTime; }
 };
 
 #endif

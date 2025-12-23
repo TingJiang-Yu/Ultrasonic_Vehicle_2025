@@ -20,8 +20,8 @@ void ultrasonic_controller::init()
     pinMode(leftPin, INPUT);
     pinMode(rightPin, INPUT);
 
-    attachInterrupt(digitalPinToInterrupt(leftPin),  leftISR,  RISING);
-    attachInterrupt(digitalPinToInterrupt(rightPin), rightISR, RISING);
+    attachInterrupt(digitalPinToInterrupt(leftPin),  leftISR,  FALLING);
+    attachInterrupt(digitalPinToInterrupt(rightPin), rightISR, FALLING);
 }
 
 void IRAM_ATTR ultrasonic_controller::leftISR()
@@ -44,22 +44,27 @@ void IRAM_ATTR ultrasonic_controller::rightISR()
 
 bool ultrasonic_controller::available()
 {
-    return leftDetected && rightDetected;
+    /*======= Your Code =======*/
+
+    /*======= Your Code =======*/
 }
 
-long ultrasonic_controller::getTimeDiff()
+int16_t ultrasonic_controller::getTimeDiff()
 {
+    // 还没有获得完整检测
+    if (!leftDetected || !rightDetected) return 0;
+
     long diff = 0;
 
-    if (leftDetected && rightDetected)
-    {
-        noInterrupts();
-        diff = ;
-        
-        interrupts();
-    }
+    noInterrupts();
+    diff = (long)leftTime - (long)rightTime;
+    leftDetected = false;
+    rightDetected = false;
+    interrupts();
+    
+    /*======= Your Code =======*/
 
-    return diff;
+    /*======= Your Code =======*/
 }
 
 void ultrasonic_controller::reset()

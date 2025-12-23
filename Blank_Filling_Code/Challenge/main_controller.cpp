@@ -16,12 +16,9 @@ main_controller::main_controller()
 
 bool main_controller::init()
 {
-    motor->init();
-    ultrasonic->init();
+    /*======= Your Code =======*/
 
-    pid->init(&dir_d, &dir_output);
-    pid->SetK(PID_KP, PID_KI, PID_KD);
-    pid->SetL(PID_MAX_INTEGRAL, PID_MIN_OUTPUT, PID_MAX_OUTPUT);
+    /*======= Your Code =======*/
 
     return true;
 }
@@ -32,11 +29,15 @@ bool main_controller::update()
 
     if (ultrasonic->available())
     {
-        
+        /*======= Your Code =======*/
+
+        /*======= Your Code =======*/
     }
     else
     {
-        
+        /*======= Your Code =======*/
+
+        /*======= Your Code =======*/
     }
 
     return true;
