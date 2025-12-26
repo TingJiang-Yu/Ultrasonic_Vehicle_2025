@@ -18,7 +18,7 @@
 
 #define ULTRASONIC_MAX_TIME_DIFFERENCE     500  // us，异常时间差限幅
 #define ULTRASONIC_TIMEDIFF_DEADZONE       10   // us，时间差死区
-#define ULTRASONIC_SILENCE_TIME            18   // us，静默时间
+#define ULTRASONIC_SILENCE_TIME            20   // us，静默时间
 
 /************************************************************
  * 3. 电机控制参数
@@ -36,7 +36,7 @@
  * 4. 行为状态机参数
  ************************************************************/
 #define SIGNAL_TIMEOUT_MS       100     // 判定信号丢失时间
-#define SEARCH_TURN_SPEED       80      // 搜索时原地旋转速度
+#define SEARCH_TURN_SPEED       127      // 搜索时原地旋转速度
 
 /************************************************************
  * 5. PID 控制参数（方向）
