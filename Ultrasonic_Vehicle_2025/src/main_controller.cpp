@@ -52,18 +52,6 @@ bool main_controller::update()
 
         int turn_output = (int)(dir_output * MOTOR_MAX_TURN_SPEED);
 
-        Serial.print("car_state: ");
-        Serial.println(state);
-        Serial.print("time_diff: ");
-        Serial.println(timeDiff);
-        Serial.print("dir_norm: ");
-        Serial.println(dirNorm);
-        Serial.print("dir_t: ");
-        Serial.println(dir_t);
-        Serial.print("turn_output: ");
-        Serial.println(turn_output);
-        Serial.println();
-
         motor->setTurn(turn_output);
 
         lastSignalTime = now;
@@ -79,8 +67,6 @@ bool main_controller::update()
         if (state == SEARCHING)
         {
             motor->search(SEARCH_TURN_SPEED);
-
-            Serial.println("car_state: SEARCHING");
         }
             
     }
