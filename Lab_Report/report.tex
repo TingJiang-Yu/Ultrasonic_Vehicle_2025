@@ -6,6 +6,8 @@
 \usepackage{booktabs}
 \usepackage{float}
 \usepackage{listings}
+\graphicspath{{image/}}
+\renewcommand{\figurename}{图}
 \usepackage{xcolor}
 
 \lstset{
@@ -76,8 +78,78 @@
 
 \subsection{超声波接收滤波与整形电路}
 
-\textbf{（本部分由张宇涵完成）} %写的时候把这一行删掉然后填上内容
-
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.3]{滤波电路.png}
+	\caption{滤波电路}
+	\label{fig:滤波}
+     \end{figure}
+         
+     该电路为单电源（$+5\text{ V}$）条件下的超声波接收前端放大电路，其主要功能包括：
+     \begin{itemize}
+     	\item 对超声波接收信号进行交流耦合
+     	\item 抑制直流与低频噪声
+     	\item 在单电源供电下实现交流信号放大
+     	\item 通过 $2.5\text{ V}$ 偏置实现虚拟地
+     \end{itemize}
+     
+     需要注意的是，实际运用中该电路会产生自激振荡，故需确保超声波接受器在无信号时$\text{Ui}$引脚与地之间保持短接状态。
+    
+  
+     输出信号的频率等于超声波接收器所接收到的信号频率（通常为 $40\,\text{kHz}$）。
+     输入端由电阻 $R$ 与电容 $C$ 构成一阶 RC 高通滤波器，其截止频率为：
+     \begin{equation}
+     	f_c = \frac{1}{2\pi RC}
+     \end{equation}
+     代入参数：
+     \[
+     R = 5.1\,\text{k}\Omega, \quad
+     C = 620\,\text{pF}
+     \]
+     \begin{equation}
+     	f_c = \frac{1}{2\pi \times 5100 \times 620 \times 10^{-12}}
+     	\approx 5.0 \times 10^{4}\,\text{Hz}
+     \end{equation}
+     \noindent
+     因此，该电路允许约 $50\,\text{kHz}$ 以上的信号通过，对低频信号具有明显抑制作用，适合用于 $40\sim60\,\text{kHz}$ 的超声波接收应用。
+     
+   \begin{figure}[h]
+   	\centering
+   	\includegraphics[scale=0.25]{2.5v稳压电路.png}
+   	\caption{2.5v偏置电路}
+   	\label{fig:2.5v}
+   	
+   \end{figure}
+     由于小车为单电源供电，故采用如图2所示的2.5V稳压管提供2.5V的偏置电压，
+     该电压作为运算放大器的参考电位，并通过 RC 网络进行滤波以提高稳定性。
+     由于运算放大器采用单电源供电（$0\sim5\,\text{V}$），无法直接处理负电压信号，因此引入 $2.5\,\text{V}$ 作为交流意义上的参考地（虚拟地）。
+     设原始超声波信号为：
+     \[
+     v_{\text{ac}}(t) = \pm V_m
+     \]
+     
+     加入偏置后，运放输入信号变为：
+     \begin{equation}
+     	v_{\text{in}}(t) = 2.5\,\text{V} \pm V_m
+     \end{equation}
+     
+     从而保证信号始终处于运放允许的输入范围内，避免削波失真。
+     偏置后的输出信号形式为：
+     \begin{equation}
+     	v_{\text{out}}(t) = 2.5\,\text{V} \pm A_v V_m
+     \end{equation}
+      \begin{figure}[h]
+     	\centering
+     	\includegraphics[scale=0.3]{比较脉冲电路.png}
+     	\caption{放大电路}
+     	\label{fig:2.5v}
+     \end{figure}
+     
+     
+     实际运用中发现 $V_m$可达$1\text{V}$以上，利用图3中的单限比较器可实现方波信号的产生。由于滤波电路输出的偏置高于2.5V,并且由于LM413运放性能受限，上升沿到达最高前便下降，故滤波输出接入运放$N$端，确保晶体管在无信号时保持高电平，接收到信号时产生频率为$40\text{Hz}$的脉冲信号。
+     
+  
+     
 \subsection{单片机与电机驱动电路}
 
 本系统选用 \texttt{ESP32} 单片机作为核心控制器，负责超声波信号的采集、时间差计算、控制算法运算以及电机驱动信号的输出。
